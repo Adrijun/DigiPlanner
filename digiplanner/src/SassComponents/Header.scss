@@ -1,0 +1,36 @@
+@import '~bootstrap/scss/bootstrap';
+@import '../SassComponents/variables.scss';
+.headerContainer {
+  background-image: url('../assets/images/kier-in-sight-archives-nNWb8lN1bqw-unsplash2.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 17vh; // Justera höjden efter behov
+  background-color: $primaryPink;
+
+  .headerCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Centrera innehållet vertikalt
+  }
+
+  .headerTitle {
+    font-size: 3rem;
+    color: #120089; // Justera textfärgen efter behov
+    font-family: 'Gochi Hand', cursive;
+    font-style: italic;
+    // font-family: 'Nunito', sans-serif;
+    // font-family: 'Roboto', sans-serif;;
+    text-shadow: 2px 2px 2px black;
+  }
+}
+.headerUnderTitle {
+  font-size: 1.2rem;
+  margin-top: -2%; // Justera efter behov
+  margin-left: 15%;
+  font-family: 'Gochi Hand', cursive;
+  text-align: center;
+}
+.navbar {
+  height: 10vh;
+  background-color: $primaryPink;
+}
