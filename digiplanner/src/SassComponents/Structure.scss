@@ -1,0 +1,11 @@
+@import '~bootstrap/scss/bootstrap';
+@import '../SassComponents/variables.scss';
+
+body {
+  width: auto;
+  height: 100vh;
+
+  p {
+    font-family: 'Nunito', sans-serif;
+  }
+}
