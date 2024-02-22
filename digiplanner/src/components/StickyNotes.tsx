@@ -1,19 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../assets/styles/StickyNotes.scss';
-
+import Note from '../utils/noteType';
 type StickyNoteProps = {
-  color: string;
-  x: number;
-  y: number;
+  note: Note;
+  onNoteChange: (
+    id: number,
+    color: string,
+    text: string,
+    currentY: number,
+    currentX: number
+  ) => void;
 };
 
-const StickyNotes: React.FC<StickyNoteProps> = ({ color, x, y }) => {
+const StickyNotes: React.FC<StickyNoteProps> = ({ note, onNoteChange }) => {
+  const { color, x, y, id, text } = note;
   const [isMoveAllowed, setIsMoveAllowed] = useState<boolean>(false);
   const stickyNoteRef = useRef<HTMLDivElement>(null);
 
   const [dx, setDx] = useState(0);
   const [dy, setDy] = useState(0);
-
+  const [currentX, setCurrentX] = useState(x);
+  const [currentY, setCurrentY] = useState(y);
+  useEffect(() => {
+    setCurrentX(x);
+    setCurrentY(y);
+  }, [x, y]);
+  console.log('Note data:', note);
   const handleMouseDown: React.MouseEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(true);
     const dimensions = stickyNoteRef.current?.getBoundingClientRect();
@@ -32,8 +44,15 @@ const StickyNotes: React.FC<StickyNoteProps> = ({ color, x, y }) => {
       stickyNoteRef.current.style.top = y + 'px';
     }
   };
-  const handleMouseUp = () => {
+  const handleMouseUp: React.MouseEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(false);
+
+    const updatedX = e.clientX - dx;
+    const updatedY = e.clientY - dy;
+    setCurrentX(updatedX);
+    setCurrentY(updatedY);
+
+    onNoteChange(id, color, text, updatedX, updatedY);
   };
 
   // For touch events
@@ -62,10 +81,15 @@ const StickyNotes: React.FC<StickyNoteProps> = ({ color, x, y }) => {
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd: React.TouchEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(false);
+    const clientX = e.changedTouches[0].clientX - dx;
+    const clientY = e.changedTouches[0].clientY - dy;
+    setCurrentX(clientX);
+    setCurrentY(clientY);
+    onNoteChange(id, color, text, clientX, clientY);
   };
-
+  console.log(note, 'note');
   return (
     <div
       className="sticky-note"
@@ -73,6 +97,10 @@ const StickyNotes: React.FC<StickyNoteProps> = ({ color, x, y }) => {
       ref={stickyNoteRef}
     >
       <textarea
+        value={text}
+        onChange={e =>
+          onNoteChange(id, color, e.target.value, currentX, currentY)
+        }
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
