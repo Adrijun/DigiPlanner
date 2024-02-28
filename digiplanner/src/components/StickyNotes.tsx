@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../assets/styles/StickyNotes.scss';
 import Note from '../utils/noteType';
+import removeIcon from '../assets/icons/remove.png';
+
 type StickyNoteProps = {
   note: Note;
+  onClose: () => void;
   onNoteChange: (
     id: number,
     color: string,
@@ -12,7 +15,11 @@ type StickyNoteProps = {
   ) => void;
 };
 
-const StickyNotes: React.FC<StickyNoteProps> = ({ note, onNoteChange }) => {
+const StickyNotes: React.FC<StickyNoteProps> = ({
+  note,
+  onNoteChange,
+  onClose,
+}) => {
   const { color, x, y, id, text } = note;
   const [isMoveAllowed, setIsMoveAllowed] = useState<boolean>(false);
   const stickyNoteRef = useRef<HTMLDivElement>(null);
@@ -25,7 +32,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({ note, onNoteChange }) => {
     setCurrentX(x);
     setCurrentY(y);
   }, [x, y]);
-  console.log('Note data:', note);
+
   const handleMouseDown: React.MouseEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(true);
     const dimensions = stickyNoteRef.current?.getBoundingClientRect();
@@ -89,13 +96,33 @@ const StickyNotes: React.FC<StickyNoteProps> = ({ note, onNoteChange }) => {
     setCurrentY(clientY);
     onNoteChange(id, color, text, clientX, clientY);
   };
-  console.log(note, 'note');
+  console.log(note.id, 'note.id');
   return (
     <div
       className="sticky-note"
       style={{ backgroundColor: color, left: x + 'px', top: y + 'px' }}
       ref={stickyNoteRef}
     >
+      <header className="sticky-note-header">
+        <button
+          onClick={onClose}
+          className="sticky-note-closebutton"
+          style={{
+            border: 'none',
+            background: 'none',
+            padding: '0',
+            cursor: 'pointer',
+          }}
+        >
+          <img
+            className="sticky-note-closebutton-icon"
+            src={removeIcon}
+            alt=""
+            width="20"
+            height="20"
+          />
+        </button>
+      </header>
       <textarea
         value={text}
         onChange={e =>

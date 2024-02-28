@@ -24,7 +24,7 @@ const NotesSaver: React.FC<NotesSaverProps> = ({ notes }) => {
           .filter(n => n.color === color && n.id === note.id)
           .pop();
         // Returnera en kopia av anteckningen med de senaste koordinaterna
-        console.log('latestCoords', latestCoords);
+
         return {
           ...note,
           x: latestCoords.x,

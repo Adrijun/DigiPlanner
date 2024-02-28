@@ -23,7 +23,6 @@ const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
         });
 
         onLoad(notes); // Skicka den sammanfogade arrayen med sparade anteckningar till onLoad funktionen
-        console.log('Data from local storage:', notes);
       } catch (error) {
         console.error('Error fetching data from local storage:', error);
       }
