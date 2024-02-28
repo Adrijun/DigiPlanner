@@ -1,5 +1,5 @@
 import React from 'react';
-import '../SassComponents/Structure.scss';
+// import '../assets/styles/Structure.scss';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 function Structure() {

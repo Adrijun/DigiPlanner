@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import '../SassComponents/Header.scss';
+import '../assets/styles/Header.scss';
 import { Link } from 'react-router-dom';
 import PostItICon from '../assets/icons/notes.png';
 import PriorityIcon from '../assets/icons/prioritize.png';
@@ -22,7 +22,7 @@ function Header() {
       </Container>
 
       <section className="navbar d-flex justify-content-start align-items-center">
-        <Link to={'/postit'} className="ms-4">
+        <Link to={'/notes'} className="ms-4">
           <img src={PostItICon} alt="" width="40" height="40" />
         </Link>
         <Link to={'/priority'} className="ms-4">
