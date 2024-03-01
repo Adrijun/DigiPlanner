@@ -30,7 +30,6 @@ const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
 
     fetchDataFromLocalStorage();
   }, [onLoad]);
-
   return null;
 };
 

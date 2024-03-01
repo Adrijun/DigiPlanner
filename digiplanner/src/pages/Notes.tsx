@@ -33,7 +33,6 @@ const Notes: React.FC<NotesProps> = () => {
     });
     setNotes(updatedNotes);
   };
-  console.log(notes, 'notes');
 
   const removeNote = (id: number, color: string) => {
     const updatedNotes = notes.filter(note => note.id !== id);
@@ -56,9 +55,9 @@ const Notes: React.FC<NotesProps> = () => {
         <NotesSaver notes={notes} />
         <NotesLoader onLoad={setNotes} />
         <div
-          onClick={e => addNote('#ffbeb0', e.clientX, e.clientY)}
+          onClick={e => addNote('#ffd6de', e.clientX, e.clientY)}
           className="fixed-notes "
-          style={{ backgroundColor: '#ffbeb0' }}
+          style={{ backgroundColor: '#ffd6de' }}
         ></div>
         <div
           onClick={e => addNote('#95fcd2', e.clientX, e.clientY)}

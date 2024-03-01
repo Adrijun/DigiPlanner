@@ -96,7 +96,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     setCurrentY(clientY);
     onNoteChange(id, color, text, clientX, clientY);
   };
-  console.log(note.id, 'note.id');
+
   return (
     <div
       className="sticky-note"
