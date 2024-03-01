@@ -1,7 +1,7 @@
 @import '../styles/abstracts/_variables.scss';
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap/scss/variables';
-
+@import 'normalize.css';
 html {
   overflow-x: hidden;
 }
