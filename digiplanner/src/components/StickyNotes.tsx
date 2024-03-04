@@ -7,7 +7,7 @@ type StickyNoteProps = {
   note: Note;
   onClose: () => void;
   onNoteChange: (
-    id: number,
+    id: string,
     color: string,
     text: string,
     currentY: number,
