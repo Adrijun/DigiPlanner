@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AcceptIcon from '../assets/icons/accept.png';
 import NotDoneIcon from '../assets/icons/notdone.png';
 import '../assets/styles/Lists.scss';
