@@ -6,10 +6,6 @@
   min-height: 100vh;
 }
 
-.color-priority-article {
-  //   background-color: $primary-pink;
-  //   background-color: $primary-green;
-}
 .accept-button {
   border: none;
   background: none;
@@ -20,17 +16,6 @@
 .acceptIcon {
   background-color: none;
 }
-
-// .pink-ul {
-//   list-style-type: none;
-//   padding-left: 0;
-//   margin-left: 0;
-//   //   overflow-wrap: break-word;
-// }
-
-// .pink-li {
-//   overflow-wrap: break-word;
-// }
 
 .color-priority-article li:nth-child(1) {
   background-color: #ffa5b1; /* Första artikeln får röd bakgrundsfärg */
@@ -49,4 +34,9 @@
 }
 .pink-priority-article {
   background-color: $primary-pink;
+}
+.progress-bar-with-border {
+  border: 2px solid black;
+  border-radius: 10px;
+  font-family: 'Gochi Hand';
 }

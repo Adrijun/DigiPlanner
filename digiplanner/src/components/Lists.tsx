@@ -20,7 +20,6 @@ const Lists: React.FC<ListsProps> = ({
   setButtonClickedList,
 }) => {
   const handleClick = (index: number) => {
-    // Kopiera den aktuella arrayen och byt tillståndet för den specifika knappen
     const updatedButtonClickedList = [...buttonClickedList];
     updatedButtonClickedList[index] = !updatedButtonClickedList[index];
     setButtonClickedList(updatedButtonClickedList);
