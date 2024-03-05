@@ -1,67 +1,101 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NotesLoader from '../utils/NotesLoader';
 import Note from '../utils/noteType';
 import '../assets/styles/Priority.scss';
-import AcceptIcon from '../assets/icons/accept.png';
-import { Row, Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Row, Col, ProgressBar } from 'react-bootstrap';
 import Lists from '../components/Lists';
 
 const Priority = () => {
   const [pinkNotes, setPinkNotes] = useState<Note[]>([]);
   const [greenNotes, setGreenNotes] = useState<Note[]>([]);
-  const [loaded, setLoaded] = useState<boolean>(false); // Lägg till en state för att hålla reda på om anteckningarna har laddats
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [pinkButtonClickedList, setPinkButtonClickedList] = useState<boolean[]>(
+    []
+  );
+  const [greenButtonClickedList, setGreenButtonClickedList] = useState<
+    boolean[]
+  >([]);
 
   const handleLoadNotes = (notes: Note[]) => {
     if (!loaded) {
-      // Kolla om anteckningarna redan har laddats
       const pinkNotes = notes.filter(note => note.color === '#ffd6de');
-      const greenNotes = notes.filter(note => note.color === '#95fcd2');
+      const greenNotes = notes.filter(note => note.color === '#b0ffca');
 
       setPinkNotes(pinkNotes);
       setGreenNotes(greenNotes);
-      setLoaded(true); // Sätt loaded till true för att undvika ytterligare anrop av handleLoadNotes
+      setPinkButtonClickedList(Array(pinkNotes.length).fill(false));
+      setGreenButtonClickedList(Array(greenNotes.length).fill(false));
+      setLoaded(true);
     }
   };
 
+  const getProgressText = (progress: number): string => {
+    if (progress >= 100) {
+      return 'Finished!';
+    } else if (progress >= 80) {
+      return 'Almost done!';
+    } else if (progress >= 50) {
+      return 'Halfway there!';
+    } else {
+      return 'Good start!';
+    }
+  };
+
+  const calculateProgress = (): { progress: number; labelText: string } => {
+    const totalButtons =
+      pinkButtonClickedList.length + greenButtonClickedList.length;
+    const clickedButtons =
+      pinkButtonClickedList.filter(button => button).length +
+      greenButtonClickedList.filter(button => button).length;
+    const progress = (clickedButtons / totalButtons) * 100;
+    const labelText = getProgressText(progress);
+    return { progress, labelText };
+  };
   return (
     <main className="priority-main">
       <section className="priority-container p-4 ">
         <NotesLoader onLoad={handleLoadNotes} />
-
-        <Row>
-          <Col Col sm={6} lg={4}>
-            <article className="color-priority-article m-3 p-3 rounded  ">
-              {pinkNotes.length > 0 && (
-                <ul className="pink-ul">
-                  {pinkNotes.map(note => (
-                    <li className="pink-li m-2 p-1 rounded " key={note.id}>
-                      <div className=" align-self-center">
-                        <button className="accept-button">
-                          <img
-                            src={AcceptIcon}
-                            className="acceptIcon"
-                            alt=""
-                            width="20"
-                            height="20"
-                          />
-                        </button>
-                        {note.text}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+        {greenNotes.length > 0 && pinkNotes.length > 0 && (
+          <Row>
+            <Col sm={6} lg={4}>
+              <Lists
+                notes={pinkNotes}
+                color="pink"
+                buttonClickedList={pinkButtonClickedList}
+                setButtonClickedList={setPinkButtonClickedList}
+              />
+            </Col>
+            <Col sm={6} lg={4}>
+              {greenNotes.length > 0 && (
+                <Lists
+                  notes={greenNotes}
+                  color="green"
+                  buttonClickedList={greenButtonClickedList}
+                  setButtonClickedList={setGreenButtonClickedList}
+                />
               )}
-            </article>
-          </Col>
-
-          <Col Col sm={6} lg={4}>
-            <Lists notes={pinkNotes} color="pink" />
-          </Col>
-          <Col Col sm={6} lg={4}>
-            <Lists notes={greenNotes} color="green" />
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        )}
       </section>
+      <Col className=" w-100 mt-5">
+        {greenNotes.length > 0 && pinkNotes.length > 0 && (
+          <section className="w-100 d-flex justify-content-center ">
+            <ProgressBar
+              // variant="custom"
+              className="custom-progress-bar w-75 md-50 progress-bar-with-border "
+              now={calculateProgress().progress}
+              label={calculateProgress().labelText}
+              style={{
+                height: '30px',
+                fontSize: '14px',
+                borderRadius: '15px',
+              }}
+            />
+          </section>
+        )}
+      </Col>
     </main>
   );
 };

@@ -7,6 +7,7 @@ import Priority from './pages/Priority';
 import Structure from './components/Structure';
 import '../src/assets/styles/abstracts/_variables.scss';
 import '../src/assets/styles/Index.scss';
+import '../src/assets/styles/abstracts/_custom.scss';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
