@@ -1,6 +1,6 @@
 // ClearLocalStorageButton.tsx
 import React from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Button, Alert, Col } from 'react-bootstrap';
 
 interface ClearLocalStorageButtonProps {
   onClear: () => void;
@@ -11,7 +11,7 @@ const ClearLocalStorageButton: React.FC<ClearLocalStorageButtonProps> = ({
 }) => {
   const handleClearLocalStorage = () => {
     const confirmed = window.confirm(
-      'Är du säker på att du vill rensa localStorage?'
+      'Are you sure you want to clear all data?'
     );
     if (confirmed) {
       localStorage.clear();
@@ -22,16 +22,24 @@ const ClearLocalStorageButton: React.FC<ClearLocalStorageButtonProps> = ({
   };
 
   return (
-    <div>
-      <Button variant="primary" onClick={handleClearLocalStorage}>
-        Clear localStorage
-      </Button>
-      {/* Visa en Bootstrap alert med instruktioner för att rensa localStorage */}
-      <Alert variant="danger" className="mt-3">
-        Klicka på knappen ovan för att rensa localStorage. Observera att detta
-        åtgärd inte kan ångras.
-      </Alert>
-    </div>
+    <Col xs={8} xl={4} className="m-4">
+      <article className="m-2 ">
+        <Alert variant="info" className="">
+          <Alert.Heading>Good job!</Alert.Heading>
+          <hr />
+          <p>
+            If you want to start over, just click the button to clear the data
+          </p>
+          <Button
+            className="btn-success mb-1"
+            variant="info"
+            onClick={handleClearLocalStorage}
+          >
+            Clear data
+          </Button>
+        </Alert>
+      </article>
+    </Col>
   );
 };
 

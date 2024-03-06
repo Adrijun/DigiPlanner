@@ -98,7 +98,6 @@ const Priority = () => {
             )}
           </Col>
         </Row>
-        {/* ))} */}
       </section>
       <Col className=" w-100 mt-5">
         {(greenNotes.length > 0 || pinkNotes.length > 0) && (
@@ -109,8 +108,8 @@ const Priority = () => {
               now={calculateProgress().progress}
               label={calculateProgress().labelText}
               style={{
-                height: '30px',
-                fontSize: '14px',
+                height: '2rem',
+                fontSize: '1.2rem',
                 borderRadius: '15px',
               }}
             />
