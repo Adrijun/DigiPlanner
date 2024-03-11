@@ -11,15 +11,18 @@ interface NotesProps {
 
 const Notes: React.FC<NotesProps> = () => {
   const [notes, setNotes] = useState<noteType[]>([]);
+  const colors = ['#ff78aa', '#b0ffca', '#fec16c', '#c0def0'];
+
   const addNote = (color: string, buttonX: number, buttonY: number) => {
-    const newX = buttonX + 10; // Lägg till 10 pixlar till höger
-    const newY = buttonY + 10; // Lägg till 10 pixlar nedåt
+    const newX = buttonX + 10;
+    const newY = buttonY + 10;
     const currentDate = new Date().toISOString();
     setNotes([
       ...notes,
-      { id: currentDate, text: '', color, x: newX, y: newY },
+      { id: currentDate, text: '', color, x: newX, y: newY, clicked: false },
     ]);
   };
+
   const handleNoteChange = (
     id: string,
     color: string,
@@ -29,7 +32,7 @@ const Notes: React.FC<NotesProps> = () => {
   ) => {
     const updatedNotes = notes.map(note => {
       if (note.id === id) {
-        return { ...note, text: newText, x: currentX, y: currentY }; // Uppdatera texten för den specifika anteckningen
+        return { ...note, text: newText, x: currentX, y: currentY };
       }
       return note;
     });
@@ -61,22 +64,20 @@ const Notes: React.FC<NotesProps> = () => {
         <NotesSaver notes={notes} />
         <NotesLoader onLoad={setNotes} />
 
-        <div
-          onClick={e => addNote('#ffd6de', e.clientX, e.clientY)}
-          className="fixed-notes "
-          style={{ backgroundColor: '#ffd6de' }}
-        ></div>
-        <div
-          onClick={e => addNote('#b0ffca', e.clientX, e.clientY)}
-          className="fixed-notes "
-          style={{ backgroundColor: '#b0ffca' }}
-        ></div>
+        {colors.map((color, index) => (
+          <article
+            key={index}
+            onClick={e => addNote(color, e.clientX, e.clientY)}
+            className="fixed-notes"
+            style={{ backgroundColor: color }}
+          ></article>
+        ))}
 
         {notes.map(note => (
           <StickyNotes
             key={note.id}
             note={note}
-            onClose={() => removeNote(note.id, note.color)}
+            onClose={(id, color) => removeNote(id, color)}
             onNoteChange={(id, color, newText, currentX, currentY) =>
               handleNoteChange(id, color, newText, currentX, currentY)
             }

@@ -5,7 +5,7 @@ import removeIcon from '../assets/icons/remove.png';
 
 type StickyNoteProps = {
   note: Note;
-  onClose: () => void;
+  onClose: (id: string, color: string) => void;
   onNoteChange: (
     id: string,
     color: string,
@@ -96,7 +96,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     setCurrentY(clientY);
     onNoteChange(id, color, text, clientX, clientY);
   };
-
+  console.log(typeof currentX, 'currentX');
   return (
     <div
       className="sticky-note"
@@ -105,7 +105,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     >
       <header className="sticky-note-header">
         <button
-          onClick={onClose}
+          onClick={() => onClose(id, color)}
           className="sticky-note-closebutton"
           style={{
             border: 'none',

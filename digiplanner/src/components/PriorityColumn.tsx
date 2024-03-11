@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Note from '../utils/noteType';
 import { Row, Col } from 'react-bootstrap';
 import '../assets/styles/PriorityColumn.scss';
@@ -17,73 +17,51 @@ const PriorityColumn: React.FC<PriorityColumnProps> = ({
   notes,
   onNoteButtonClick,
 }) => {
-  const pinkNotes = notes.filter(note => note.color === '#ffd6de');
-  const greenNotes = notes.filter(note => note.color === '#b0ffca');
-  const pinkColor = '#ff78aa';
-  const greenColor = '#b0ffca';
+  // Dela upp anteckningarna efter färg
+  const notesByColor: { [key: string]: Note[] } = {};
+  notes.forEach(note => {
+    if (!notesByColor[note.color]) {
+      notesByColor[note.color] = [];
+    }
+    notesByColor[note.color].push(note);
+  });
 
   return (
     <section className="column">
       <Row>
-        <Col sm={6} md={4}>
-          <article
-            className="priority-column-article m-3 p-3 rounded"
-            style={{
-              backgroundColor: pinkColor,
-            }}
-          >
-            <SortableContext
-              items={pinkNotes}
-              strategy={verticalListSortingStrategy}
+        {Object.entries(notesByColor).map(([color, colorNotes]) => (
+          <Col sm={6} md={4} key={color}>
+            <article
+              className="priority-column-article m-3 p-3 rounded"
+              style={{
+                backgroundColor: color,
+              }}
             >
-              {pinkNotes.map((note, index) => (
-                <ul key={note.id} className="pink-ul m-2 p-1 rounded task-item">
-                  <ListItem
-                    id={note.id}
-                    text={note.text}
+              <SortableContext
+                items={colorNotes}
+                strategy={verticalListSortingStrategy}
+              >
+                {colorNotes.map((note, index) => (
+                  <ul
                     key={note.id}
-                    color="pink"
-                    index={index}
-                    onButtonClick={(id, clicked) =>
-                      onNoteButtonClick(id, clicked)
-                    }
-                  />
-                </ul>
-              ))}
-            </SortableContext>
-          </article>
-        </Col>
-        <Col sm={6} md={4}>
-          <article
-            className="priority-column-article m-3 p-3 rounded "
-            style={{
-              backgroundColor: greenColor,
-            }}
-          >
-            <SortableContext
-              items={greenNotes}
-              strategy={verticalListSortingStrategy}
-            >
-              {greenNotes.map((note, index) => (
-                <ul
-                  key={note.id}
-                  className="green-ul m-2 p-1 rounded task-item"
-                >
-                  <ListItem
-                    id={note.id}
-                    text={note.text}
-                    key={note.id}
-                    color="green"
-                    index={index}
-                    onButtonClick={(id, clicked) =>
-                      onNoteButtonClick(id, clicked)
-                    }
-                  />
-                </ul>
-              ))}
-            </SortableContext>
-          </article>
-        </Col>
+                    className={`${color}-ul m-2 p-1 rounded task-item`}
+                  >
+                    <ListItem
+                      id={note.id}
+                      text={note.text}
+                      key={note.id}
+                      color={color}
+                      index={index}
+                      onButtonClick={(id, clicked) =>
+                        onNoteButtonClick(id, clicked)
+                      }
+                    />
+                  </ul>
+                ))}
+              </SortableContext>
+            </article>
+          </Col>
+        ))}
       </Row>
     </section>
   );
