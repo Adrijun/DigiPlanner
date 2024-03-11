@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Note from './noteType';
 
 type NotesLoaderProps = {
-  onLoad: (notes: Note[]) => void; // Ändra onLoad för att skicka objektet med sparade anteckningar grupperade efter färg
+  onLoad: (notes: Note[]) => void;
 };
 
 const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
@@ -10,7 +10,7 @@ const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
     const fetchDataFromLocalStorage = async () => {
       try {
         const keys = Object.keys(localStorage);
-        const notes: Note[] = []; // Skapa en array för att lagra alla sparade anteckningar
+        const notes: Note[] = [];
 
         keys.forEach(key => {
           if (key.startsWith('notesGroup_')) {
@@ -22,7 +22,7 @@ const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
           }
         });
 
-        onLoad(notes); // Skicka den sammanfogade arrayen med sparade anteckningar till onLoad funktionen
+        onLoad(notes);
       } catch (error) {
         console.error('Error fetching data from local storage:', error);
       }
