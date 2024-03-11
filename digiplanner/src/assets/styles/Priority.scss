@@ -5,6 +5,9 @@
   width: 100vw;
   min-height: 100vh;
 }
+.priority-container {
+  width: 100%;
+}
 
 .accept-button {
   border: none;
@@ -17,26 +20,8 @@
   background-color: none;
 }
 
-.color-priority-article li:nth-child(1) {
-  background-color: #ffa5b1; /* Första artikeln får röd bakgrundsfärg */
-}
-
-.color-priority-article li:nth-child(2) {
-  background-color: #ffa5b9; /* Andra artikeln får blå bakgrundsfärg */
-}
-
-.color-priority-article li:nth-child(3) {
-  background-color: #ffbbc9; /* Tredje artikeln får grön bakgrundsfärg */
-}
-
-.green-priority-article {
-  background-color: $primary-green;
-}
-.pink-priority-article {
-  background-color: $primary-pink;
-}
 .progress-bar-with-border {
-  border: 2px solid black;
+  border: 2px solid #5bff87;
   border-radius: 10px;
   font-family: 'Gochi Hand';
 }

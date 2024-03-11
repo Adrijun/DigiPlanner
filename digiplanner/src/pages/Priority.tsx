@@ -4,48 +4,63 @@ import Note from '../utils/noteType';
 import '../assets/styles/Priority.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, ProgressBar } from 'react-bootstrap';
-import Lists from '../components/Lists';
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
+import {
+  DndContext,
+  closestCorners,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  TouchSensor,
+  KeyboardSensor,
+} from '@dnd-kit/core';
+import PriorityColumn from '../components/PriorityColumn';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import ClearLocalStorageButton from '../utils/ClearLocalStorageButton';
+
 const Priority = () => {
-  const { width, height } = useWindowSize();
-  const [pinkNotes, setPinkNotes] = useState<Note[]>([]);
-  const [greenNotes, setGreenNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [pinkButtonClickedList, setPinkButtonClickedList] = useState<boolean[]>(
-    []
-  );
-  const [greenButtonClickedList, setGreenButtonClickedList] = useState<
-    boolean[]
-  >([]);
+  const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [showClearLocalStorage, setShowClearLocalStorage] =
     useState<boolean>(false);
-  useEffect(() => {
-    if (
-      pinkButtonClickedList.every(button => button) &&
-      greenButtonClickedList.every(button => button)
-    ) {
-      setShowConfetti(true);
-      setShowClearLocalStorage(true);
-    } else {
-      setShowConfetti(false);
-      setShowClearLocalStorage(false);
-    }
-  }, [pinkButtonClickedList, greenButtonClickedList]);
 
-  const handleLoadNotes = (notes: Note[]) => {
+  const handleLoadNotes = (loadedNotes: Note[]) => {
     if (!loaded) {
-      const pinkNotes = notes.filter(note => note.color === '#ffd6de');
-      const greenNotes = notes.filter(note => note.color === '#b0ffca');
-
-      setPinkNotes(pinkNotes);
-      setGreenNotes(greenNotes);
-      setPinkButtonClickedList(Array(pinkNotes.length).fill(false));
-      setGreenButtonClickedList(Array(greenNotes.length).fill(false));
+      setNotes(loadedNotes);
       setLoaded(true);
     }
+  };
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    setNotes(notes => {
+      const originalIndex = notes.findIndex(note => note.id === active.id);
+      const newIndex = notes.findIndex(note => note.id === over.id);
+      const updatedNotes = arrayMove(notes, originalIndex, newIndex);
+
+      return updatedNotes;
+    });
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleNoteButtonClick = (id: string, clicked: boolean) => {
+    const updatedNotes = notes.map(note =>
+      note.id === id ? { ...note, clicked } : note
+    );
+    setNotes(updatedNotes);
   };
 
   const getProgressText = (progress: number): string => {
@@ -61,72 +76,68 @@ const Priority = () => {
   };
 
   const calculateProgress = (): { progress: number; labelText: string } => {
-    const totalButtons =
-      pinkButtonClickedList.length + greenButtonClickedList.length;
-    const clickedButtons =
-      pinkButtonClickedList.filter(button => button).length +
-      greenButtonClickedList.filter(button => button).length;
+    const totalButtons = notes.length;
+    const clickedButtons = notes.filter(note => note.clicked).length;
     const progress = (clickedButtons / totalButtons) * 100;
     const labelText = getProgressText(progress);
     return { progress, labelText };
   };
+
+  useEffect(() => {
+    if (calculateProgress().progress === 100) {
+      setShowConfetti(true);
+      setShowClearLocalStorage(true);
+    } else {
+      setShowConfetti(false);
+      setShowClearLocalStorage(false);
+    }
+  }, [notes]);
+
   return (
-    <main className="priority-main">
+    <main className="priority-main ">
       <section className="priority-container p-4 ">
         <NotesLoader onLoad={handleLoadNotes} />
-        {/* {pinkNotes.length > 0 ||
-          (greenNotes.length > 0 && ( */}
-        <Row>
-          <Col sm={6} lg={4}>
-            {pinkNotes.length > 0 && (
-              <Lists
-                notes={pinkNotes}
-                color="pink"
-                buttonClickedList={pinkButtonClickedList}
-                setButtonClickedList={setPinkButtonClickedList}
-              />
-            )}
-          </Col>
-          <Col sm={6} lg={4}>
-            {greenNotes.length > 0 && (
-              <Lists
-                notes={greenNotes}
-                color="green"
-                buttonClickedList={greenButtonClickedList}
-                setButtonClickedList={setGreenButtonClickedList}
-              />
-            )}
-          </Col>
-        </Row>
-      </section>
-      <Col className=" w-100 mt-5">
-        {(greenNotes.length > 0 || pinkNotes.length > 0) && (
-          <section className="w-100 d-flex justify-content-center ">
-            <ProgressBar
-              // variant="custom"
-              className="custom-progress-bar w-75 md-50 progress-bar-with-border "
-              now={calculateProgress().progress}
-              label={calculateProgress().labelText}
-              style={{
-                height: '2rem',
-                fontSize: '1.2rem',
-                borderRadius: '15px',
-              }}
+        {loaded && notes.length > 0 && (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragEnd={handleDragEnd}
+          >
+            <PriorityColumn
+              notes={notes}
+              onNoteButtonClick={(id, clicked) =>
+                handleNoteButtonClick(id, clicked)
+              }
             />
-          </section>
+          </DndContext>
         )}
-        {showClearLocalStorage &&
-          (greenNotes.length > 0 || pinkNotes.length > 0) && (
-            <ClearLocalStorageButton
-              onClear={() => setShowClearLocalStorage(false)}
-            />
-          )}
-        {showConfetti &&
-          showClearLocalStorage &&
-          (greenNotes.length > 0 || pinkNotes.length > 0) && (
-            <Confetti width={width} height={height} />
-          )}
-      </Col>
+      </section>
+      <Row>
+        <Col className=" w-100 mt-5">
+          <section className="w-100 d-flex justify-content-center ">
+            {notes.length > 0 && (
+              <ProgressBar
+                className="custom-progress-bar w-75 md-50 progress-bar-with-border"
+                now={calculateProgress().progress}
+                label={calculateProgress().labelText}
+                style={{
+                  height: '2rem',
+                  fontSize: '1.2rem',
+                  borderRadius: '15px',
+                }}
+              />
+            )}
+          </section>
+        </Col>
+      </Row>
+      {showConfetti && showClearLocalStorage && (
+        <Confetti width={width} height={height} />
+      )}
+      {showConfetti && showClearLocalStorage && (
+        <ClearLocalStorageButton
+          onClear={() => setShowClearLocalStorage(false)}
+        />
+      )}
     </main>
   );
 };
