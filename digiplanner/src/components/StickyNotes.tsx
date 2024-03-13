@@ -32,7 +32,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     setCurrentX(x);
     setCurrentY(y);
   }, [x, y]);
-
+  const maxLength = 80;
   const handleMouseDown: React.MouseEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(true);
     const dimensions = stickyNoteRef.current?.getBoundingClientRect();
@@ -96,7 +96,14 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     setCurrentY(clientY);
     onNoteChange(id, color, text, clientX, clientY);
   };
-  console.log(typeof currentX, 'currentX');
+  const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
+    const newText = e.target.value;
+
+    if (newText.length <= maxLength) {
+      onNoteChange(id, color, newText, currentX, currentY);
+    }
+  };
+
   return (
     <div
       className="sticky-note"
@@ -125,9 +132,8 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
       </header>
       <textarea
         value={text}
-        onChange={e =>
-          onNoteChange(id, color, e.target.value, currentX, currentY)
-        }
+        maxLength={maxLength}
+        onChange={handleTextChange}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

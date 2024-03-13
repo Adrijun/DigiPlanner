@@ -17,6 +17,7 @@ const ClearLocalStorageButton: React.FC<ClearLocalStorageButtonProps> = ({
       localStorage.clear();
       if (onClear) {
         onClear();
+        window.location.reload();
       }
     }
   };
@@ -28,7 +29,7 @@ const ClearLocalStorageButton: React.FC<ClearLocalStorageButtonProps> = ({
           <Alert.Heading>Good job!</Alert.Heading>
           <hr />
           <p>
-            If you want to start over, just click the button to clear the data
+            If you want to start over, just click the button to clear the data.
           </p>
           <Button
             className="btn-success mb-1"

@@ -23,6 +23,7 @@ const NotesLoader: React.FC<NotesLoaderProps> = ({ onLoad }) => {
         });
 
         onLoad(notes);
+        console.log(notes, 'notes');
       } catch (error) {
         console.error('Error fetching data from local storage:', error);
       }

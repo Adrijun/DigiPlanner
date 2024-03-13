@@ -4,3 +4,11 @@ li {
   touch-action: none;
   overflow-wrap: break-word;
 }
+
+.accept-button {
+  transition: transform 0.2s ease;
+}
+
+.pop-out {
+  transform: scale(1.3);
+}
