@@ -1,0 +1,19 @@
+@import '../styles/abstracts/_variables.scss';
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/variables';
+@import 'normalize.css';
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  width: auto;
+  height: 100%;
+
+  p,
+  li {
+    font-family: 'Nunito', sans-serif;
+    // font-size: 2.5rem;
+  }
+}

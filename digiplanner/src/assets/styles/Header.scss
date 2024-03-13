@@ -1,0 +1,38 @@
+@import '../styles/abstracts/_variables.scss';
+.headerContainer {
+  background-image: url('../images/kier-in-sight-archives-nNWb8lN1bqw-unsplash4.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 17vh;
+  background-color: $primary-color;
+
+  .headerTitle {
+    font-size: 3rem;
+    color: #3544c2;
+    font-family: 'Gochi Hand', cursive;
+    font-style: italic;
+
+    text-shadow: 2px 2px 2px #0181b3;
+    margin-top: 20px;
+  }
+}
+.headerUnderTitle {
+  font-size: 1.2rem;
+  margin-top: -1%;
+  margin-left: 15%;
+  font-family: 'Gochi Hand', cursive;
+  color: rgb(253, 105, 0);
+}
+
+.navbar {
+  height: 10vh;
+  background-color: $primary-color;
+
+  .underline {
+    height: 2px;
+    width: 90%;
+    background-color: white;
+    margin: 0 auto;
+    bottom: 2%;
+  }
+}

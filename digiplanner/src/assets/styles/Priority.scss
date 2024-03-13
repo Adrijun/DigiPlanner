@@ -1,0 +1,27 @@
+@import '../styles/abstracts/variables';
+.priority-main {
+  height: auto;
+  background-color: $primary-color;
+  width: 100vw;
+  min-height: 100vh;
+}
+.priority-container {
+  width: 100%;
+}
+
+.accept-button {
+  border: none;
+  background: none;
+
+  cursor: pointer;
+}
+
+.acceptIcon {
+  background-color: none;
+}
+
+.progress-bar-with-border {
+  border: 2px solid #5bff87;
+  border-radius: 10px;
+  font-family: 'Gochi Hand';
+}
