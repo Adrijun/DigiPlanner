@@ -3,16 +3,15 @@
   background-image: url('../images/kier-in-sight-archives-nNWb8lN1bqw-unsplash4.jpg');
   background-size: cover;
   background-position: center;
-  height: 17vh; // Justera höjden efter behov
+  height: 17vh;
   background-color: $primary-color;
 
   .headerTitle {
     font-size: 3rem;
-    color: #0181b3; // Justera textfärgen efter behov
+    color: #3544c2;
     font-family: 'Gochi Hand', cursive;
     font-style: italic;
-    // font-family: 'Nunito', sans-serif;
-    // font-family: 'Roboto', sans-serif;;
+
     text-shadow: 2px 2px 2px #0181b3;
     margin-top: 20px;
   }

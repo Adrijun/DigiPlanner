@@ -10,6 +10,7 @@ interface ListItemProps {
   color: string;
   index: number;
   onButtonClick: (id: string, clicked: boolean) => void;
+  buttonState: boolean;
 }
 const ListItem: React.FC<ListItemProps> = ({
   text,
@@ -17,28 +18,22 @@ const ListItem: React.FC<ListItemProps> = ({
   color,
   index,
   onButtonClick,
+  buttonState,
 }) => {
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
-  useEffect(() => {
-    // Läs in knappens tillstånd från local storage när komponenten laddas
-    const storedButtonState = localStorage.getItem('buttonState');
-    if (storedButtonState !== null) {
-      setButtonClicked(JSON.parse(storedButtonState));
-    }
-  }, []);
-
   const handleButtonClick = () => {
-    const newButtonClicked = !buttonClicked;
-    setButtonClicked(newButtonClicked);
-    onButtonClick(id, newButtonClicked);
-    localStorage.setItem('buttonState', JSON.stringify(newButtonClicked));
+    setTimeout(() => {
+      // Om användaren inte klickar igen inom tidsgränsen, räkna som enkelt klick
+      setButtonClicked(!buttonClicked);
+    }, 300); // Justera tidsgränsen efter behov
+    const newButtonState = !buttonClicked;
+    setButtonClicked(newButtonState);
 
-    console.log(newButtonClicked, 'newButtonClicked');
+    onButtonClick(id, newButtonState);
   };
-
   const style = { transform: CSS.Transform.toString(transform), transition };
   return (
     <>
@@ -55,7 +50,10 @@ const ListItem: React.FC<ListItemProps> = ({
           style={{ wordBreak: 'break-word' }}
         >
           <p>{text}</p>
-          <button className={'accept-button'} onDoubleClick={handleButtonClick}>
+          <button
+            className={`accept-button ${buttonClicked ? 'pop-out' : ''}`}
+            onClick={handleButtonClick}
+          >
             <img
               src={buttonClicked ? AcceptIcon : NotDoneIcon}
               className="acceptIcon"

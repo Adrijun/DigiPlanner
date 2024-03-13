@@ -12,7 +12,7 @@ function Structure() {
       <main>
         <Outlet />
       </main>
-      <footer></footer>
+      <footer>{/* <Footer /> */}</footer>
     </>
   );
 }
