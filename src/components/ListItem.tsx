@@ -20,17 +20,36 @@ const ListItem: React.FC<ListItemProps> = ({
   onButtonClick,
   buttonState,
 }) => {
+  // const [buttonClicked, setButtonClicked] = useState<boolean>(false);
+  // const { attributes, listeners, setNodeRef, transform, transition } =
+  //   useSortable({ id });
+
+  const [lastClickTime, setLastClickTime] = useState<number>(0);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
+  // Mobile devices
+  const handleTouchStart = () => {
+    const now = Date.now();
+    const doubleClickDelay = 300; //Adjusting needs
+
+    if (now - lastClickTime < doubleClickDelay) {
+      // If the time between presses is short enough, interpret it as a double click.
+      setButtonClicked(!buttonClicked);
+      onButtonClick(id, !buttonClicked);
+    }
+
+    setLastClickTime(now);
+  };
+  // Desktop devices
   const handleButtonClick = () => {
     const newButtonState = !buttonClicked;
     setButtonClicked(newButtonState);
 
     onButtonClick(id, newButtonState);
   };
-
+  // Keyboard support
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter') {
       handleButtonClick();
@@ -56,13 +75,15 @@ const ListItem: React.FC<ListItemProps> = ({
             className={`accept-button ${buttonClicked ? 'pop-out' : ''}`}
             onDoubleClick={handleButtonClick}
             onKeyDown={handleKeyDown}
+            onTouchStart={handleTouchStart}
+            tabIndex={0}
           >
             <img
               src={buttonClicked ? AcceptIcon : NotDoneIcon}
               className="acceptIcon"
               alt=""
-              width="30"
-              height="30"
+              width="25"
+              height="25"
             />
           </button>
         </div>
