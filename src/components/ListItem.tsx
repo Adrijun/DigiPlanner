@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import AcceptIcon from '../assets/icons/accept.png';
@@ -25,14 +25,16 @@ const ListItem: React.FC<ListItemProps> = ({
     useSortable({ id });
 
   const handleButtonClick = () => {
-    setTimeout(() => {
-      // Om användaren inte klickar igen inom tidsgränsen, räkna som enkelt klick
-      setButtonClicked(!buttonClicked);
-    }, 300); // Justera tidsgränsen efter behov
     const newButtonState = !buttonClicked;
     setButtonClicked(newButtonState);
 
     onButtonClick(id, newButtonState);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter') {
+      handleButtonClick();
+    }
   };
   const style = { transform: CSS.Transform.toString(transform), transition };
   return (
@@ -52,14 +54,15 @@ const ListItem: React.FC<ListItemProps> = ({
           <p>{text}</p>
           <button
             className={`accept-button ${buttonClicked ? 'pop-out' : ''}`}
-            onClick={handleButtonClick}
+            onDoubleClick={handleButtonClick}
+            onKeyDown={handleKeyDown}
           >
             <img
               src={buttonClicked ? AcceptIcon : NotDoneIcon}
               className="acceptIcon"
               alt=""
-              width="20"
-              height="20"
+              width="30"
+              height="30"
             />
           </button>
         </div>
