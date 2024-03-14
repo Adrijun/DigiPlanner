@@ -25,13 +25,16 @@ const ListItem: React.FC<ListItemProps> = ({
     useSortable({ id });
 
   const handleButtonClick = () => {
-    // setTimeout(() => {
-    //   setButtonClicked(!buttonClicked);
-    // }, 300);
     const newButtonState = !buttonClicked;
     setButtonClicked(newButtonState);
 
     onButtonClick(id, newButtonState);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter') {
+      handleButtonClick();
+    }
   };
   const style = { transform: CSS.Transform.toString(transform), transition };
   return (
@@ -51,7 +54,8 @@ const ListItem: React.FC<ListItemProps> = ({
           <p>{text}</p>
           <button
             className={`accept-button ${buttonClicked ? 'pop-out' : ''}`}
-            onClick={handleButtonClick}
+            onDoubleClick={handleButtonClick}
+            onKeyDown={handleKeyDown}
           >
             <img
               src={buttonClicked ? AcceptIcon : NotDoneIcon}
