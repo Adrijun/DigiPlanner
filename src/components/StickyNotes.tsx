@@ -32,7 +32,7 @@ const StickyNotes: React.FC<StickyNoteProps> = ({
     setCurrentX(x);
     setCurrentY(y);
   }, [x, y]);
-  const maxLength = 80;
+  const maxLength = 56;
   const handleMouseDown: React.MouseEventHandler<HTMLTextAreaElement> = e => {
     setIsMoveAllowed(true);
     const dimensions = stickyNoteRef.current?.getBoundingClientRect();

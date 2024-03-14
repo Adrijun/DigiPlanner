@@ -19,6 +19,8 @@ textarea {
   background-color: rgba($color: #000000, $alpha: 0);
   cursor: grabbing;
   touch-action: none;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
 }
 
 .sticky-note-header {
@@ -31,4 +33,12 @@ textarea {
   width: 0px;
   height: 0px;
   border-radius: 50%;
+}
+
+@media (max-width: 600px) {
+  .sticky-note {
+    width: 110px;
+    height: 110px;
+    font-size: 0.8rem;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import AcceptIcon from '../assets/icons/accept.png';
@@ -25,10 +25,9 @@ const ListItem: React.FC<ListItemProps> = ({
     useSortable({ id });
 
   const handleButtonClick = () => {
-    setTimeout(() => {
-      // Om användaren inte klickar igen inom tidsgränsen, räkna som enkelt klick
-      setButtonClicked(!buttonClicked);
-    }, 300); // Justera tidsgränsen efter behov
+    // setTimeout(() => {
+    //   setButtonClicked(!buttonClicked);
+    // }, 300);
     const newButtonState = !buttonClicked;
     setButtonClicked(newButtonState);
 
@@ -58,8 +57,8 @@ const ListItem: React.FC<ListItemProps> = ({
               src={buttonClicked ? AcceptIcon : NotDoneIcon}
               className="acceptIcon"
               alt=""
-              width="20"
-              height="20"
+              width="30"
+              height="30"
             />
           </button>
         </div>
