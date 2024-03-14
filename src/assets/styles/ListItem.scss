@@ -12,3 +12,8 @@ li {
 .pop-out {
   transform: scale(1.3);
 }
+
+@media (max-width: 600px) {
+  .accept-button {
+  }
+}
